@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import axios from 'axios';
 import { baseUrl } from '../api';
 
@@ -53,11 +54,19 @@ const mutations = {
   },
   SAVE_PRICE(state, data) {
     const raw = data.RAW;
-    state.price[raw.FROMSYMBOL]?
-      state.price[raw.FROMSYMBOL][raw.LASTMARKET] = raw.PRICE
-      :state.price[raw.FROMSYMBOL] = {
-        [raw.LASTMARKET]: raw.PRICE
-      }
+
+    Vue.set(state, 'price', {...state.price,
+      ...state.price[raw.FROMSYMBOL]?
+        state.price[raw.FROMSYMBOL][raw.LASTMARKET] = raw.PRICE
+        :state.price[raw.FROMSYMBOL] = {
+          [raw.LASTMARKET]: raw.PRICE
+        }
+    })
+    // state.price[raw.FROMSYMBOL]?
+    //   state.price[raw.FROMSYMBOL][raw.LASTMARKET] = raw.PRICE
+    //   :state.price[raw.FROMSYMBOL] = {
+    //     [raw.LASTMARKET]: raw.PRICE
+    //   }
   }
 };
 

@@ -33,7 +33,7 @@ const actions = {
 
 const mutations = {
   SAVE_COINS_AVERAGE(state, coin) {
-    Vue.set(state, 'coinsAverage', Object.assign(state.coinsAverage, coin))
+    Vue.set(state, 'coinsAverage', {...state.coinsAverage, ...coin})
   }
 };
 

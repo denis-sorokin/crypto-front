@@ -35,11 +35,15 @@ export default {
   data() {
     return ({
       showTable: false,
+      coinAvg: []
     })
   },
   created() {
     this.$store.dispatch('coin/GET_COIN', this.data);
   },
+  // mounted() {
+  //   this.coinAvg = this.coinsAverage[this.data]
+  // },
   computed: {
     ...mapGetters({
       companies: 'companies/getCompanies',
