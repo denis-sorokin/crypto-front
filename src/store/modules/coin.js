@@ -8,7 +8,7 @@ const state = {
 
 const getters = {
   coins: state => state.coinsAverage,
-  coinAverage: (state, coin) => state.coinsAverage[coin]
+  coinAverage: state => state.coinsAverage
 };
 
 const actions = {

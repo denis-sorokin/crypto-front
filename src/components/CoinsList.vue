@@ -13,11 +13,6 @@ import Coin from './common/Coin'
 export default {
   name: 'CoinsList',
   components: { Coin },
-  // data() {
-  //   return ({
-  //     companyWithCoins: [],
-  //   })
-  // },
   created() {
     this.$store.dispatch('companies/GET_COINS');
   },

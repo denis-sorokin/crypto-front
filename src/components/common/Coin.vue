@@ -7,7 +7,7 @@
     </div>
 
     <div class="ml-auto">
-      <b-btn @click="showTable = !showTable"
+      <b-btn @click="loadTable"
              :class="showTable ? 'collapsed' : null"
              :aria-controls="`collapse-${data}`"
              variant="primary"
@@ -16,20 +16,25 @@
       </b-btn>
     </div>
     <b-collapse class="mt-2 w-100" v-model="showTable" :id="`collapse-${data}`">
-      <b-table striped hover :items="companiesTable"></b-table>
+      <b-list-group class="d-flex w-100">
+        <Company :company="company" v-for="company in companyWithCoin" :currency="data"
+                 @click="openHistory(company)" :key="company"/>
+      </b-list-group>
     </b-collapse>
   </b-list-group-item>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import Company from './Company'
 
 export default {
   name: 'Coin',
+  components: { Company },
   props: ['data'],
   data() {
     return ({
-      showTable: false
+      showTable: false,
     })
   },
   created() {
@@ -48,14 +53,26 @@ export default {
         return acc
       }, [])
     },
-    companiesTable() {
-      return this.companyWithCoin.map(e => {
-        return {Company: e}
-      })
-    },
     coinAverage() {
       return this.coinsAverage[this.data]
     }
   },
+  methods: {
+    openHistory(company) {
+      console.log(company)
+    },
+    loadTable() {
+      if (!this.showTable) {
+        this.companyWithCoin.forEach(company => {
+          this.$store.dispatch('companies/GET_PRICE', {
+            coin: this.data,
+            company: company
+          });
+        });
+      }
+
+      this.showTable = !this.showTable
+    }
+  }
 }
 </script>
