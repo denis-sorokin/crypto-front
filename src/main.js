@@ -8,8 +8,16 @@ Vue.config.productionTip = false;
 
 Vue.use(BootstrapVue);
 
+Vue.filter('averageCost', function(value) {
+  if (value && value.length === 2) {
+    return `${value[1]} ${value[0]}`
+  } else {
+    return 'Unknown'
+  }
+});
+
 new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');

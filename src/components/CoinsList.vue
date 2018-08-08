@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <div class="coins-list" v-for="coin in coins">
-      <Coin v-if="coin" :data="coin"></Coin>
-    </div>
+    <b-list-group class="coins-list my-5">
+      <Coin v-if="coin" v-for="coin in coins" :data="coin"></Coin>
+    </b-list-group>
   </div>
 </template>
 
@@ -13,6 +13,11 @@ import Coin from './common/Coin'
 export default {
   name: 'CoinsList',
   components: { Coin },
+  // data() {
+  //   return ({
+  //     companyWithCoins: [],
+  //   })
+  // },
   created() {
     this.$store.dispatch('companies/GET_COINS');
   },
@@ -20,7 +25,7 @@ export default {
     ...mapGetters({
       companies: 'companies/getCompanies',
       coins: 'companies/getCoins'
-    })
+    }),
   }
 }
 </script>

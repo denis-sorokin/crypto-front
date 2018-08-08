@@ -3,37 +3,37 @@ import axios from 'axios';
 import { baseUrl } from '../api';
 
 const state = {
-  coinsDetail: [],
+  coinsAverage: {},
 };
 
 const getters = {
-  getCoinsDetail: state => state.coinsDetail
+  coins: state => state.coinsAverage
 };
 
 const actions = {
   GET_COIN({ commit, rootState }, coin) {
-    const companies = rootState.companies.companies;
-    const coins = Object.keys(companies).map(company => {
-      Object.keys(companies[company]).forEach(val => {
-        console.log(companies[company][val])
-        // if (Object.keys(companies[company][val]) === coin) return companies[company][val];
-      })
-    }, []);
-    console.log(coins)
-
-    // axios.get(`${baseUrl}data/price?fsym=${coin}&tsyms=${coin==='BTC'? 'USD':'BTC'}`)
-    //   .then(res => {
-    //     if(res.status === 200) {
-    //       console.log(coin)
-    //       console.log(res.data)
-    //       console.log(res.data.BTC)
-    //     }
-    //   });
+    const currency = coin === 'BTC'? 'USD':'BTC';
+    axios.get(`${baseUrl}data/price?fsym=${coin}&tsyms=${currency}`)
+      .then(res => {
+        if(res.status === 200) {
+          if(!!res.data[currency]) {
+            commit('SAVE_COINS_AVERAGE', {
+              [coin]: [
+                currency, res.data[currency]
+              ]
+            })
+          }
+        }})
+      .catch(e => {
+        console.error(e);
+      });
   }
 };
 
 const mutations = {
-  //
+  SAVE_COINS_AVERAGE(state, coin) {
+    Vue.set(state, 'coinsAverage', Object.assign(state.coinsAverage, coin))
+  }
 };
 
 export default {
