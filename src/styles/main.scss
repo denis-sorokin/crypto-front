@@ -2,5 +2,7 @@
 @import '~bootstrap-vue/dist/bootstrap-vue.css';
 
 .coin {
-
+  &--title {
+    line-height: 2.5;
+  }
 }

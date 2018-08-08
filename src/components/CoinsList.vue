@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <b-list-group class="coins-list my-5">
-      <Coin v-if="coin" v-for="coin in coins" :data="coin"></Coin>
+    <b-list-group class="my-5">
+      <Coin v-if="coin" v-for="coin in coins" :data="coin" :key="coin"></Coin>
     </b-list-group>
   </div>
 </template>

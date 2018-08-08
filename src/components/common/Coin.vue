@@ -1,17 +1,23 @@
 <template>
-  <b-list-group-item v-if="coinAverage" class="coin d-flex row my-1">
-    <div class="d-flex justify-content-between w-75">
+  <b-list-group-item class="coin d-flex row my-1">
+    <div class="d-flex justify-content-between w-75 coin--title">
       <span class="align-middle">{{ data }}</span>
       <span class="align-middle">{{ coinAverage | averageCost }}</span>
-      <span class="align-middle">{{ companyWithCoin }}</span>
+      <span class="align-middle">{{ companyWithCoin.length }}</span>
     </div>
 
     <div class="ml-auto">
-      <b-btn :v-b-toggle="`collapseTable-${data}`" variant="primary">Open</b-btn>
-      <b-collapse :id="`collapseTable-${data}`" class="mt-2">
-        Content
-      </b-collapse>
+      <b-btn @click="showTable = !showTable"
+             :class="showTable ? 'collapsed' : null"
+             :aria-controls="`collapse-${data}`"
+             variant="primary"
+             :aria-expanded="showTable ? 'true' : 'false'">
+        Open
+      </b-btn>
     </div>
+    <b-collapse class="mt-2 w-100" v-model="showTable" :id="`collapse-${data}`">
+      <b-table striped hover :items="companiesTable"></b-table>
+    </b-collapse>
   </b-list-group-item>
 </template>
 
@@ -21,6 +27,11 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'Coin',
   props: ['data'],
+  data() {
+    return ({
+      showTable: false
+    })
+  },
   created() {
     this.$store.dispatch('coin/GET_COIN', this.data);
   },
@@ -32,10 +43,15 @@ export default {
     companyWithCoin() {
       return Object.keys(this.companies).reduce((acc, val) => {
         if (this.data in this.companies[val]) {
-          acc += 1
+          acc.push(val)
         }
         return acc
-      }, 0)
+      }, [])
+    },
+    companiesTable() {
+      return this.companyWithCoin.map(e => {
+        return {Company: e}
+      })
     },
     coinAverage() {
       return this.coinsAverage[this.data]
