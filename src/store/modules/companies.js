@@ -13,6 +13,7 @@ const getters = {
   getCompanies: state => state.companies,
   getCoins: state => state.coins,
   getPrice: state => state.price,
+  getHistory: state => state.history
 };
 
 const actions = {
@@ -52,12 +53,12 @@ const actions = {
   },
   GET_HISTORY({ commit }, data) {
     const currency = data.coin === 'BTC'? 'USD':'BTC';
-    const count = 3; // days, hours, minutes
+    const count = 10; // days, hours, minutes
     if (data.time !== 'day' && data.time !== 'hour' && data.time !== 'minute') {
       console.error('Time format not valid!');
       return;
     }
-
+    debugger
     axios.get(baseUrl +
       `data/histo${data.time}?fsym=${data.coin}&tsym=${currency}&limit=30&aggregate=${count}&e=${data.company}`)
       .then(res => {
@@ -84,7 +85,6 @@ const mutations = {
     Vue.set(state.price, cur, {...state.price[cur], ...data})
   },
   SAVE_HISTORY(state, data) {
-    console.log(data);
     state.history = data;
   }
 };

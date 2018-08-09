@@ -1,14 +1,18 @@
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
+import Highcharts from 'highcharts'
 import HighchartsVue from 'highcharts-vue'
+import stockInit from 'highcharts/modules/stock'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 
 Vue.config.productionTip = false;
 
+stockInit(Highcharts);
+
 Vue.use(BootstrapVue);
-Vue.use(HighchartsVue, {tagName: 'charts'});
+Vue.use(HighchartsVue, { tagName: 'charts' });
 
 Vue.filter('averageCost', function(value) {
   if (value && value.length === 2) {

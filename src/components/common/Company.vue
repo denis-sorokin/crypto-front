@@ -3,7 +3,10 @@
     <span class="align-start">{{ company }}</span>
     <span class="align-middle">{{ cost }}</span>
     <b-modal ref="modalRef" title="Currency history">
-      <charts constructor-type="stockChart" :options="chart"></charts>
+
+      <charts v-if="chartOptions" :constructor-type="'stockChart'"
+              :options="chartOptions" ref="highcharts"></charts>
+      <b-btn class="mt-3" variant="outline-danger" block @click="hideModal">Close</b-btn>
     </b-modal>
   </b-list-group-item>
 </template>
@@ -14,18 +17,10 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'Company',
   props: ['company', 'currency'],
-  data() {
-    return {
-      chart: {
-        series: [{
-          data: [1,2,3]
-        }]
-      }
-    }
-  },
   computed: {
     ...mapGetters({
-      price: 'companies/getPrice'
+      price: 'companies/getPrice',
+      history: 'companies/getHistory'
     }),
     cost() {
       if (this.price && this.currency) {
@@ -33,6 +28,21 @@ export default {
         if (value) {
           return value[this.company];
         };
+      }
+    },
+    chartOptions() {
+      if (this.history && this.history.Data) {
+        return {
+          chart: {
+            type: 'candlestick'
+          },
+          series: [{
+            data: this.history.Data.map(e => {
+              return [e.time, e.open, e.high, e.low, e.close]
+            }),
+            // color: '#6fcd98'
+          }]
+        }
       }
     }
   },
