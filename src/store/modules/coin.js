@@ -1,6 +1,5 @@
 import Vue from 'vue';
-import axios from 'axios';
-import { baseUrl } from '../api';
+import cryptoApi from '../../interceptor';
 
 const state = {
   coinsAverage: {},
@@ -14,7 +13,7 @@ const getters = {
 const actions = {
   GET_COIN({ commit, rootState }, coin) {
     const currency = coin === 'BTC'? 'USD':'BTC';
-    axios.get(`${baseUrl}data/price?fsym=${coin}&tsyms=${currency}`)
+    cryptoApi.get(`data/price?fsym=${coin}&tsyms=${currency}`)
       .then(res => {
         if(res.status === 200) {
           if(!!res.data[currency]) {

@@ -4,6 +4,7 @@ import Highcharts from 'highcharts'
 import HighchartsVue from 'highcharts-vue'
 import stockInit from 'highcharts/modules/stock'
 import App from './App.vue'
+import Loader from './components/common/Loader'
 import router from './router'
 import store from './store'
 
@@ -13,6 +14,8 @@ stockInit(Highcharts);
 
 Vue.use(BootstrapVue);
 Vue.use(HighchartsVue, { tagName: 'charts' });
+
+Vue.component('loader', Loader);
 
 Vue.filter('averageCost', function(value) {
   if (value && value.length === 2) {

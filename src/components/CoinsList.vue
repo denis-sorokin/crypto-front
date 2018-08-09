@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <b-list-group class="my-5">
+    <loader v-if="loading"/>
+    <b-list-group :class="loading? 'blur my-5': 'my-5'">
       <Coin v-if="coin" v-for="coin in coins.slice(1, 5)" :data="coin" :key="coin"></Coin>
     </b-list-group>
   </div>
@@ -19,7 +20,8 @@ export default {
   computed: {
     ...mapGetters({
       companies: 'companies/getCompanies',
-      coins: 'companies/getCoins'
+      coins: 'companies/getCoins',
+      loading: 'loader/getLoaderStatus'
     }),
   }
 }

@@ -2,10 +2,11 @@
   <b-list-group-item class="company d-flex row mb-1 justify-content-between" @click="showModal">
     <span class="align-start">{{ company }}</span>
     <span class="align-middle">{{ cost }}</span>
-    <b-modal ref="modalRef" title="Currency history">
+    <b-modal ref="modalRef" hide-footer hide-backdrop title="Currency history" size="lg" centered>
 
       <charts v-if="chartOptions" :constructor-type="'stockChart'"
               :options="chartOptions" ref="highcharts"></charts>
+
       <b-btn class="mt-3" variant="outline-danger" block @click="hideModal">Close</b-btn>
     </b-modal>
   </b-list-group-item>
@@ -28,31 +29,87 @@ export default {
         if (value) {
           return value[this.company];
         };
+        return 'Unknown'
       }
     },
     chartOptions() {
       if (this.history && this.history.Data) {
         return {
           chart: {
-            type: 'candlestick'
+            type: 'candlestick',
+            zoomType: 'xy',
+            credits: false,
+          },
+          rangeSelector: {
+            buttons: [
+              {
+                type: 'hour',
+                count: 7,
+                text: '7 hours'
+              }, {
+                type: 'day',
+                count: 1,
+                text: '1 day'
+              }, {
+                type: 'all',
+                text: 'All'
+              }
+            ],
+            buttonTheme: {
+              width: 55,
+              r: 7,
+              style: {
+                color: '#039',
+                fontWeight: 'bold'
+              },
+              states: {
+                hover: {
+                },
+                select: {
+                  fill: '#039',
+                  style: {
+                    color: 'white'
+                  }
+                }
+              }
+            },
+            inputBoxBorderColor: 'gray',
+            inputBoxWidth: 120,
+            inputBoxHeight: 18,
+            inputStyle: {
+              color: '#039',
+              fontWeight: 'bold'
+            },
+            labelStyle: {
+              color: 'silver',
+              fontWeight: 'bold'
+            },
+            selected: 1,
+            inputEnabled: false
+          },
+          navigator: {
+            enabled: true
           },
           series: [{
+            name: this.currency,
             data: this.history.Data.map(e => {
-              return [e.time, e.open, e.high, e.low, e.close]
+              return [e.time*1000, e.open, e.high, e.low, e.close]
             }),
-            // color: '#6fcd98'
-          }]
+          }],
         }
       }
     }
   },
   methods: {
     showModal () {
-      this.$store.dispatch('companies/GET_HISTORY', {time: 'day', coin: this.currency, company: this.company});
-      this.$refs.modalRef.show()
+      this.getHistory();
+      this.$refs.modalRef.show();
     },
     hideModal () {
       this.$refs.modalRef.hide()
+    },
+    getHistory(time = 'minute') {
+      this.$store.dispatch('companies/GET_HISTORY', {time: time, coin: this.currency, company: this.company});
     }
   }
 }

@@ -1,6 +1,5 @@
 import Vue from 'vue';
-import axios from 'axios';
-import { baseUrl } from '../api';
+import cryptoApi from '../../interceptor';
 
 const state = {
   companies: [],
@@ -18,7 +17,7 @@ const getters = {
 
 const actions = {
   GET_COINS({ commit }) {
-    axios.get(baseUrl + 'data/all/exchanges')
+    cryptoApi.get('data/all/exchanges')
       .then(res => {
         if (res.status === 200) {
 
@@ -37,7 +36,7 @@ const actions = {
   GET_PRICE({ commit }, data) {
     const currency = data.coin === 'BTC'? 'USD':'BTC';
 
-    axios.get(baseUrl + `data/generateAvg?fsym=${data.coin}&tsym=${currency}&e=${data.company}`)
+    cryptoApi.get(`data/generateAvg?fsym=${data.coin}&tsym=${currency}&e=${data.company}`)
       .then(res => {
         if (res.status === 200) {
           const raw = res.data.RAW;
@@ -53,14 +52,13 @@ const actions = {
   },
   GET_HISTORY({ commit }, data) {
     const currency = data.coin === 'BTC'? 'USD':'BTC';
-    const count = 10; // days, hours, minutes
+    const count = 10080; // days, hours, minutes
     if (data.time !== 'day' && data.time !== 'hour' && data.time !== 'minute') {
       console.error('Time format not valid!');
       return;
     }
-    debugger
-    axios.get(baseUrl +
-      `data/histo${data.time}?fsym=${data.coin}&tsym=${currency}&limit=30&aggregate=${count}&e=${data.company}`)
+    cryptoApi.get(
+      `data/histo${data.time}?fsym=${data.coin}&tsym=${currency}&limit=${count}&e=${data.company}`)
       .then(res => {
         if (res.status === 200) {
           commit('SAVE_HISTORY', res.data);

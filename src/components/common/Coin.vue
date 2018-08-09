@@ -41,9 +41,6 @@ export default {
   created() {
     this.$store.dispatch('coin/GET_COIN', this.data);
   },
-  // mounted() {
-  //   this.coinAvg = this.coinsAverage[this.data]
-  // },
   computed: {
     ...mapGetters({
       companies: 'companies/getCompanies',
@@ -51,7 +48,9 @@ export default {
     }),
     companyWithCoin() {
       return Object.keys(this.companies).reduce((acc, val) => {
-        if (this.data in this.companies[val]) {
+        if (this.data in this.companies[val] &&
+          (this.companies[val][this.data].includes('USD') ||
+            this.companies[val][this.data].includes('BTC'))) {
           acc.push(val)
         }
         return acc
