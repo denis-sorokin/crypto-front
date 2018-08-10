@@ -5,7 +5,7 @@
       <span class="ml-auto float-right company--cost">{{ cost }}</span>
     </b-list-group-item>
 
-    <b-modal ref="modalRef" hide-footer :title="company" size="lg"
+    <b-modal v-show="history" ref="modalRef" hide-footer :title="company" size="lg"
              @hide="modalBackdrophandler" @close="modalBackdrophandler" @ok="modalBackdrophandler"
              centered class="historyPopup">
 
@@ -120,15 +120,18 @@ export default {
     },
     hideModal () {
       this.$refs.modalRef.hide();
-      this.$store.dispatch('other/CLOSE_POPUP');
+      this.closeModal();
     },
     getHistory(time = 'minute') {
       this.$store.dispatch('companies/GET_HISTORY', {time: time, coin: this.currency, company: this.company});
     },
+    closeModal() {
+      this.$store.dispatch('other/CLOSE_POPUP');
+      // this.$store.dispatch('companies/CLEAR_HISTORY');
+    },
     modalBackdrophandler(e) {
-      console.log(e);
       if (e && e.type && e.type === 'hide') {
-        this.$store.dispatch('other/CLOSE_POPUP');
+        this.closeModal();
       }
     }
   }

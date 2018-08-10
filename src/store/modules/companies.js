@@ -67,7 +67,10 @@ const actions = {
         }
       })
       .catch(e => console.error(e))
-  }
+  },
+  // CLEAR_HISTORY({ commit }) {
+  //   commit('CLEAR_HISTORY');
+  // }
 };
 
 const mutations = {
@@ -84,7 +87,10 @@ const mutations = {
   },
   SAVE_HISTORY(state, data) {
     state.history = data;
-  }
+  },
+  // CLEAR_HISTORY(state) {
+  //   state.history = null;
+  // }
 };
 
 export default {
