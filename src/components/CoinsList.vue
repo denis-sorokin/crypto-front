@@ -4,7 +4,7 @@
     <b-list-group :class="loading? 'blur my-5': 'my-5'">
       <Coin v-if="coin" v-for="coin in coins.slice(1, 5)" :data="coin" :key="coin"></Coin>
     </b-list-group>
-    <div v-if="modal" class="disable--bg"></div>
+    <div v-if="modal" class="disable disable--bg"></div>
   </div>
 </template>
 

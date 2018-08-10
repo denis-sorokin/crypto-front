@@ -38,7 +38,8 @@
 }
 
 .disable {
-  z-index: 700;
+  z-index: 1700;
+  pointer-events: none;
   &--bg {
     position: fixed;
     top: 0;

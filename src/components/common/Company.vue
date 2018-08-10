@@ -1,7 +1,10 @@
 <template>
-  <b-list-group-item v-if="cost" :class="classed" @click="showModal">
-    <span>{{ company }}</span>
-    <span class="ml-auto float-right company--cost">{{ cost }}</span>
+  <div>
+    <b-list-group-item v-if="cost" :class="classed" @click="showModal">
+      <span>{{ company }}</span>
+      <span class="ml-auto float-right company--cost">{{ cost }}</span>
+    </b-list-group-item>
+
     <b-modal ref="modalRef" hide-footer :title="company" size="lg"
              @hide="modalBackdrophandler" @close="modalBackdrophandler" @ok="modalBackdrophandler"
              centered class="historyPopup">
@@ -11,7 +14,7 @@
 
       <b-btn class="mt-3" variant="outline-danger" block @click="hideModal">Close</b-btn>
     </b-modal>
-  </b-list-group-item>
+  </div>
 </template>
 
 <script>
