@@ -50,7 +50,6 @@ export default {
             type: 'candlestick',
             zoomType: 'x',
           },
-          showLoading: ('Loading data from server'),
           rangeSelector: {
             buttons: [
               {
@@ -113,7 +112,7 @@ export default {
             events: {
               setExtremes: this.loadData
             },
-            // minRange: 3600 * 1000 // one hour
+            minRange: 3600 * 1000 // one hour
           },
           yAxis: {
             floor: 0
@@ -152,6 +151,11 @@ export default {
     },
     loadData(e) {
       console.log(e)
+      // this.getHistory(e.to);
+      let lineCharts = this.$refs.highcharts;
+      lineCharts.showLoading('Loading data from server...');
+      lineCharts.addSeries(this.historyData);
+      lineCharts.hideLoading();
     }
   }
 }

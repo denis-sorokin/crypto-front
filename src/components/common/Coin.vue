@@ -17,7 +17,7 @@
     </b-row>
 
     <b-collapse class="mt-2 w-100" v-model="showTable" :id="`collapse-${data}`">
-      <b-list-group class="d-flex w-100">
+      <b-list-group class="d-flex w-75 mx-auto">
         <Company :company="company" v-for="company in companyWithCoin" :currency="data"
                  @click="openHistory(company)" :key="company"/>
       </b-list-group>
