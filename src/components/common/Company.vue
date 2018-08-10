@@ -55,16 +55,15 @@ export default {
             buttons: [
               {
                 type: 'hour',
-                count: 1,
-                text: '1 hour'
+                count: 12,
+                text: '12 hours'
               }, {
                 type: 'day',
-                count: 1,
-                text: '1 day'
+                count: 3,
+                text: '3 days'
               }, {
-                type: 'month',
-                count: 1,
-                text: '1 month'
+                type: 'all',
+                text: 'All'
               }
             ],
             buttonTheme: {
@@ -94,7 +93,7 @@ export default {
               color: 'silver',
               fontWeight: 'bold'
             },
-            selected: 1,
+            selected: 2,
             inputEnabled: false
           },
           navigator: {
@@ -139,7 +138,7 @@ export default {
       this.$refs.modalRef.hide();
       this.closeModal();
     },
-    getHistory(time = 'minute') {
+    getHistory(time = 'hour') {
       this.$store.dispatch('companies/GET_HISTORY', {time: time, coin: this.currency, company: this.company});
     },
     closeModal() {
