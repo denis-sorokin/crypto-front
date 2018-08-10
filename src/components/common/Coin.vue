@@ -1,20 +1,21 @@
 <template>
   <b-list-group-item class="coin d-flex row my-1">
-    <div class="d-flex justify-content-between w-75 coin--title">
-      <span class="align-middle">{{ data }}</span>
-      <span class="align-middle">{{ coinAverage | averageCost }}</span>
-      <span class="align-middle">{{ companyWithCoin.length }}</span>
-    </div>
+    <b-row class="d-flex justify-content-between mx-auto w-100 coin--title">
+      <b-col><span class="float-left">{{ data }}</span></b-col>
+      <b-col><span class="mr-auto float-left">{{ coinAverage | averageCost }}</span></b-col>
+      <b-col><span class="float-right">{{ companyWithCoin.length }}</span></b-col>
 
-    <div class="ml-auto">
-      <b-btn @click="loadTable"
-             :class="showTable ? 'collapsed' : null"
-             :aria-controls="`collapse-${data}`"
-             variant="primary"
-             :aria-expanded="showTable ? 'true' : 'false'">
-        Open
-      </b-btn>
-    </div>
+      <b-col>
+        <b-btn @click="loadTable"
+               :class="showTable ? 'collapsed float-right' : 'float-right'"
+               :aria-controls="`collapse-${data}`"
+               variant="primary"
+               :aria-expanded="showTable ? 'true' : 'false'">
+          Open
+        </b-btn>
+      </b-col>
+    </b-row>
+
     <b-collapse class="mt-2 w-100" v-model="showTable" :id="`collapse-${data}`">
       <b-list-group class="d-flex w-100">
         <Company :company="company" v-for="company in companyWithCoin" :currency="data"

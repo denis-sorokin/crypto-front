@@ -19,7 +19,7 @@ Vue.component('loader', Loader);
 
 Vue.filter('averageCost', function(value) {
   if (value && value.length === 2) {
-    return `${value[1]} ${value[0]}`
+    return `${value[0]} ${value[1]}`
   } else {
     return 'Unknown'
   }

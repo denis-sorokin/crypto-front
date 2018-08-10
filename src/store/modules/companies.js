@@ -52,7 +52,7 @@ const actions = {
   },
   GET_HISTORY({ commit }, data) {
     const currency = data.coin === 'BTC'? 'USD':'BTC';
-    const count = 10080; // days, hours, minutes
+    const count = 60; // days, hours, minutes
     if (data.time !== 'day' && data.time !== 'hour' && data.time !== 'minute') {
       console.error('Time format not valid!');
       return;

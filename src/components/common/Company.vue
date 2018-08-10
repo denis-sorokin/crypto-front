@@ -38,27 +38,33 @@ export default {
         return 'Unknown'
       }
     },
+    historyData() {
+      return this.history.Data.map(e => {
+        return [e.time*1000, e.open, e.high, e.low, e.close]
+      })
+    },
     chartOptions() {
       if (this.history && this.history.Data) {
         return {
           chart: {
             type: 'candlestick',
-            zoomType: 'xy',
-            credits: false,
+            zoomType: 'x',
           },
+          showLoading: ('Loading data from server'),
           rangeSelector: {
             buttons: [
               {
                 type: 'hour',
-                count: 7,
-                text: '7 hours'
+                count: 1,
+                text: '1 hour'
               }, {
                 type: 'day',
                 count: 1,
                 text: '1 day'
               }, {
-                type: 'all',
-                text: 'All'
+                type: 'month',
+                count: 1,
+                text: '1 month'
               }
             ],
             buttonTheme: {
@@ -69,8 +75,6 @@ export default {
                 fontWeight: 'bold'
               },
               states: {
-                hover: {
-                },
                 select: {
                   fill: '#039',
                   style: {
@@ -94,14 +98,27 @@ export default {
             inputEnabled: false
           },
           navigator: {
-            enabled: true
+            adaptToUpdatedData: false,
+            series: {
+              data: this.historyData
+            }
           },
           series: [{
             name: this.currency,
-            data: this.history.Data.map(e => {
-              return [e.time*1000, e.open, e.high, e.low, e.close]
-            }),
+            dataGrouping: {
+              enabled: false
+            },
+            data: this.historyData
           }],
+          xAxis: {
+            events: {
+              setExtremes: this.loadData
+            },
+            // minRange: 3600 * 1000 // one hour
+          },
+          yAxis: {
+            floor: 0
+          },
         }
       }
     },
@@ -133,6 +150,9 @@ export default {
       if (e && e.type && e.type === 'hide') {
         this.closeModal();
       }
+    },
+    loadData(e) {
+      console.log(e)
     }
   }
 }
