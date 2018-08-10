@@ -44,13 +44,16 @@ export default {
   computed: {
     ...mapGetters({
       companies: 'companies/getCompanies',
-      coinsAverage: 'coin/coins'
+      coinsAverage: 'coin/coins',
+      price: 'companies/getPrice'
     }),
     companyWithCoin() {
       return Object.keys(this.companies).reduce((acc, val) => {
-        if (this.data in this.companies[val] &&
+        if (
+          this.data in this.companies[val] &&
           (this.companies[val][this.data].includes('USD') ||
-            this.companies[val][this.data].includes('BTC'))) {
+            this.companies[val][this.data].includes('BTC'))
+          ) {
           acc.push(val)
         }
         return acc

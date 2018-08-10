@@ -1,8 +1,10 @@
 <template>
-  <b-list-group-item class="company d-flex row mb-1 justify-content-between" @click="showModal">
-    <span class="align-start">{{ company }}</span>
-    <span class="align-middle">{{ cost }}</span>
-    <b-modal ref="modalRef" hide-footer hide-backdrop title="Currency history" size="lg" centered>
+  <b-list-group-item v-if="cost" :class="classed" @click="showModal">
+    <span>{{ company }}</span>
+    <span class="ml-auto float-right company--cost">{{ cost }}</span>
+    <b-modal ref="modalRef" hide-footer :title="company" size="lg"
+             @hide="modalBackdrophandler" @close="modalBackdrophandler" @ok="modalBackdrophandler"
+             centered class="historyPopup">
 
       <charts v-if="chartOptions" :constructor-type="'stockChart'"
               :options="chartOptions" ref="highcharts"></charts>
@@ -21,7 +23,8 @@ export default {
   computed: {
     ...mapGetters({
       price: 'companies/getPrice',
-      history: 'companies/getHistory'
+      history: 'companies/getHistory',
+      modal: 'other/getModalStatus'
     }),
     cost() {
       if (this.price && this.currency) {
@@ -98,18 +101,32 @@ export default {
           }],
         }
       }
+    },
+    classed() {
+      const base = 'd-flex row mb-1 justify-content-between company';
+      return !this.modal? base + ' company--zoom' : base;
     }
   },
   methods: {
     showModal () {
-      this.getHistory();
-      this.$refs.modalRef.show();
+      if (!this.modal) {
+        this.$store.dispatch('other/OPEN_POPUP');
+        this.getHistory();
+        this.$refs.modalRef.show();
+      }
     },
     hideModal () {
-      this.$refs.modalRef.hide()
+      this.$refs.modalRef.hide();
+      this.$store.dispatch('other/CLOSE_POPUP');
     },
     getHistory(time = 'minute') {
       this.$store.dispatch('companies/GET_HISTORY', {time: time, coin: this.currency, company: this.company});
+    },
+    modalBackdrophandler(e) {
+      console.log(e);
+      if (e && e.type && e.type === 'hide') {
+        this.$store.dispatch('other/CLOSE_POPUP');
+      }
     }
   }
 }
