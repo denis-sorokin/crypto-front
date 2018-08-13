@@ -40,7 +40,8 @@ export default {
     },
     historyData() {
       return this.history.Data.map(e => {
-        return [e.time*1000, e.open, e.high, e.low, e.close]
+        return [].concat([e.time*1000, e.open, e.high, e.low, e.close], [[Date.UTC(2018, 8, 6, 9, 5), null, null, null, null]])
+          .sort((a, b) => a[0] > b[0])
       })
     },
     chartOptions() {
@@ -60,6 +61,10 @@ export default {
                 type: 'day',
                 count: 3,
                 text: '3 days'
+              }, {
+                type: 'day',
+                count: 5,
+                text: '5 days'
               }, {
                 type: 'all',
                 text: 'All'
@@ -101,10 +106,13 @@ export default {
               data: this.historyData
             }
           },
+          scrollbar: {
+            liveRedraw: false
+          },
           series: [{
             name: this.currency,
             dataGrouping: {
-              enabled: false
+              enabled: false,
             },
             data: this.historyData
           }],
@@ -137,7 +145,7 @@ export default {
       this.$refs.modalRef.hide();
       this.closeModal();
     },
-    getHistory(time = 'hour') {
+    getHistory(time = 'day') {
       this.$store.dispatch('companies/GET_HISTORY', {time: time, coin: this.currency, company: this.company});
     },
     closeModal() {
@@ -152,10 +160,10 @@ export default {
     loadData(e) {
       console.log(e)
       // this.getHistory(e.to);
-      let lineCharts = this.$refs.highcharts;
-      lineCharts.showLoading('Loading data from server...');
-      lineCharts.addSeries(this.historyData);
-      lineCharts.hideLoading();
+      // let lineCharts = this.$refs.highcharts;
+      // lineCharts.showLoading('Loading data from server...');
+      // lineCharts.addSeries(this.historyData);
+      // lineCharts.hideLoading();
     }
   }
 }
