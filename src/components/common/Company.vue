@@ -145,8 +145,8 @@ export default {
       this.$refs.modalRef.hide();
       this.closeModal();
     },
-    getHistory(time = 'day') {
-      this.$store.dispatch('companies/GET_HISTORY', {time: time, coin: this.currency, company: this.company});
+    getHistory(time = 'day', to = null) {
+      this.$store.dispatch('companies/GET_HISTORY', {time: time, coin: this.currency, company: this.company, to});
     },
     closeModal() {
       this.$store.dispatch('other/CLOSE_POPUP');
@@ -159,6 +159,7 @@ export default {
     },
     loadData(e) {
       console.log(e)
+      this.getHistory(e.rangeSelectorButton.type, e.dataMax);
       // this.getHistory(e.to);
       // let lineCharts = this.$refs.highcharts;
       // lineCharts.showLoading('Loading data from server...');

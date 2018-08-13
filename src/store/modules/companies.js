@@ -51,14 +51,16 @@ const actions = {
       .catch(e => console.error(e));
   },
   GET_HISTORY({ commit }, data) {
+    console.log(data)
     const currency = data.coin === 'BTC'? 'USD':'BTC';
     const count = 7; // days, hours, minutes
+    const to = data.to? `&toTs=${data.to}` : '';
     if (data.time !== 'day' && data.time !== 'hour' && data.time !== 'minute') {
       console.error('Time format not valid!');
       return;
     }
     cryptoApi.get(
-      `data/histo${data.time}?fsym=${data.coin}&tsym=${currency}&limit=${count}&e=${data.company}`)
+      `data/histo${data.time}?fsym=${data.coin}&tsym=${currency}&limit=${count}&e=${data.company}${to}`)
       .then(res => {
         if (res.status === 200) {
           commit('SAVE_HISTORY', res.data);
